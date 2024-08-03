@@ -36,8 +36,21 @@ export function TrashAnimation() {
                 const isSelected = imagesToRemove.includes(image);
 
                 return (
-                  <motion.li key={image} className="relative flex h-[100px] w-[100px]">
-                    <div
+                  <motion.li
+                    exit={
+                      isSelected
+                        ? {}
+                        : {
+                            opacity: 0,
+                            filter: 'blur(4px)',
+                            transition: { duration: 0.17 },
+                          }
+                    }
+                    key={image}
+                    className="relative flex h-[100px] w-[100px]"
+                  >
+                    <motion.div
+                      exit={{ opacity: 0, transition: { duration: 0 } }}
                       className={clsx(
                         'pointer-events-none absolute right-2 top-2 flex h-4 w-4 items-center justify-center rounded-full border border-white/60'
                       )}
@@ -61,7 +74,7 @@ export function TrashAnimation() {
                           </svg>
                         </div>
                       ) : null}
-                    </div>
+                    </motion.div>
                     <button
                       aria-label="Remove book"
                       onClick={() => {
@@ -187,8 +200,16 @@ export function TrashAnimation() {
               </motion.div>
 
               <motion.div
-                animate={{ y: 73 }}
-                transition={{ delay: 0.13 }}
+                animate={{
+                  y: removed ? 110 : 73,
+                  scale: removed ? 0.7 : 1,
+                  filter: removed ? 'blur(4px)' : 'blur(0px)',
+                }}
+                transition={
+                  removed
+                    ? { duration: 0.3, type: 'spring', bounce: 0 }
+                    : { delay: 0.13 }
+                }
                 className="absolute top-[-60px] flex w-full flex-col-reverse items-center"
               >
                 {imagesToRemove.map((image, index) => (
@@ -213,8 +234,12 @@ export function TrashAnimation() {
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                exit={{ opacity: 1 }}
-                transition={{ delay: 0.175, duration: 0 }}
+                exit={{ opacity: 0 }}
+                transition={
+                  removed
+                    ? { delay: 0, duration: 0 }
+                    : { delay: 0.175, duration: 0 }
+                }
                 className="absolute bottom-[0] left-[3px] h-full w-[90px]"
               >
                 <TrashFront />
