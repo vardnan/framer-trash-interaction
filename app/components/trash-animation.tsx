@@ -235,11 +235,7 @@ export function TrashAnimation() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                transition={
-                  removed
-                    ? { delay: 0, duration: 0 }
-                    : { delay: 0.175, duration: 0 }
-                }
+                transition={{ delay: removed ? 0 : 0.175, duration: 0 }}
                 className="absolute bottom-[0] left-[3px] h-full w-[90px]"
               >
                 <TrashFront />
